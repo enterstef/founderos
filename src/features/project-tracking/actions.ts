@@ -64,7 +64,10 @@ export async function updateTaskContent(input: TaskUpdateInput) {
     })
     .eq('id', parsed.data.task_id)
     
-  if (error) return { error: 'Failed to update task' }
+  if (error) {
+    console.error('Update task error:', error)
+    return { error: 'Failed to update task: ' + error.message }
+  }
 
   revalidatePath(`/agency/clients/${task.project_id}`)
   revalidatePath(`/portal/projects/${task.project_id}`)
