@@ -43,20 +43,11 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user) {
-    // If we have a user, we should check their role from profiles
-    // Warning: doing DB queries in middleware is generally slow on edge networks, 
-    // but Next.js middleware is run in Node.js on some platforms.
-    // For Vercel, this executes on the Edge, so we have to use standard fetch or supabase js.
-    
+    const userRole = request.cookies.get('user_role')?.value
+
     // If they try to go to login while logged in, redirect based on role
     if (pathname === '/login' || pathname === '/') {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-
-      if (profile?.role === 'super_admin') {
+      if (userRole === 'super_admin') {
         return NextResponse.redirect(new URL('/agency/dashboard', request.url))
       } else {
         // Find their project or just go to /portal
@@ -66,13 +57,7 @@ export async function middleware(request: NextRequest) {
     
     // Basic route protection by prefix
     if (pathname.startsWith('/agency')) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-        
-      if (profile?.role !== 'super_admin') {
+      if (userRole !== 'super_admin') {
         return NextResponse.redirect(new URL('/portal', request.url))
       }
     }

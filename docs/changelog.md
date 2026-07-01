@@ -26,3 +26,22 @@ Dropped all policies using get_user_role() from public tables and storage.object
 
 **Why:** To remove duplication and confusion, relying exclusively on the newer, standardized is_admin() helper and implicit bucket policies.
 
+
+## [2026-07-02] — Optimize middleware database queries
+
+**Type:** refactor
+**Scope:** middleware, features/auth
+
+**What changed:**
+Optimized the Next.js Edge Middleware to eliminate database queries on every request to protected routes.
+- Modified \eatures/auth/actions.ts\ (\signIn\, \signOut\) to set and clear a secure \user_role\ cookie upon authentication.
+- Modified \middleware.ts\ to read the \user_role\ cookie instead of querying the Supabase \profiles\ table for role-based redirects.
+
+**Files affected:**
+- middleware.ts
+- src/features/auth/actions.ts
+
+**Database changes:** NO
+
+**Why:** To significantly improve performance by eliminating database roundtrips on edge networks for every authenticated request.
+
