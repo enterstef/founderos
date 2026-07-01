@@ -45,3 +45,20 @@ Optimized the Next.js Edge Middleware to eliminate database queries on every req
 
 **Why:** To significantly improve performance by eliminating database roundtrips on edge networks for every authenticated request.
 
+
+## [2026-07-02] — Update project tasks and backlog
+
+**Type:** config
+**Scope:** documentation
+
+**What changed:**
+Updated \	ask.md\ and \udit_plan_vs_implementation.md\ to explicitly defer the \sync-template-updates\ feature to Phase 2 backlog. Added a new section for Phase 2 tasks.
+
+**Files affected:**
+- task.md
+- audit_plan_vs_implementation.md
+
+**Database changes:** NO
+
+**Why:** To maintain accurate tracking of deferred work and keep the MVP scope focused.
+
