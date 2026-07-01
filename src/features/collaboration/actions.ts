@@ -66,14 +66,16 @@ export async function saveAttachment(input: AttachmentInput) {
   return { success: true }
 }
 
-export async function getDownloadUrl(storagePath: string) {
+export async function getDownloadUrl(storagePath: string, fileName?: string) {
   await requireAuth()
   const supabase = await createClient()
   
   const { data, error } = await supabase
     .storage
     .from('task-attachments')
-    .createSignedUrl(storagePath, 60 * 60) // 1 hour
+    .createSignedUrl(storagePath, 60 * 60, {
+      download: fileName || true
+    }) // 1 hour
     
   if (error) return { error: 'Nu se poate accesa fișierul' }
   return { url: data.signedUrl }

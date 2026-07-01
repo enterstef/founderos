@@ -55,7 +55,7 @@ export function AttachmentList({ taskId, attachments, onUpdate }: { taskId: stri
   }
 
   async function handleDownload(path: string, fileName: string) {
-    const res = await getDownloadUrl(path)
+    const res = await getDownloadUrl(path, fileName)
     if (res.error) {
       toast({ variant: 'destructive', title: 'Eroare', description: res.error })
       return
