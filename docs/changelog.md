@@ -9,3 +9,20 @@
 - Created triggers for `updated_at` and `handle_new_user`
 - Created RPC `get_project_progress` for weighted progress calculation
 - Created storage bucket `task-attachments` with access policies
+
+## [2026-07-02] — Clean up duplicate RLS policies
+
+**Type:** schema
+**Scope:** database
+
+**What changed:**
+Dropped the old redundant RLS policies based on the get_user_role() function for all core tables and storage buckets, and subsequently dropped the get_user_role() function itself.
+
+**Files affected:**
+- None (Applied directly via SQL)
+
+**Database changes:** YES
+Dropped all policies using get_user_role() from public tables and storage.objects. Dropped get_user_role() function.
+
+**Why:** To remove duplication and confusion, relying exclusively on the newer, standardized is_admin() helper and implicit bucket policies.
+
