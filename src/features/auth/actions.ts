@@ -19,7 +19,8 @@ export async function signIn(input: LoginInput) {
   })
 
   if (error) {
-    return { error: error.message }
+    console.error("SignIn error:", error)
+    return { error: String(error) }
   }
 
   // Nu facem redirect din action (cel puțin nu cu NextResponse.redirect)
@@ -42,7 +43,8 @@ export async function signUp(input: LoginInput) {
   })
 
   if (error) {
-    return { error: error.message }
+    console.error("SignUp error:", error)
+    return { error: String(error) }
   }
 
   return { success: true }
