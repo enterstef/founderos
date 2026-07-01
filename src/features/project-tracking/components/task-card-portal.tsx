@@ -9,6 +9,7 @@ import { setTaskStatus } from '../actions'
 import { useToast } from '@/hooks/use-toast'
 import type { ProjectTask } from '../schemas'
 import clsx from 'clsx'
+import { TaskCollaboration } from '@/features/collaboration/components/task-collaboration'
 
 export function TaskCardPortal({ task }: { task: ProjectTask }) {
   const [loading, setLoading] = useState(false)
@@ -52,18 +53,24 @@ export function TaskCardPortal({ task }: { task: ProjectTask }) {
         </div>
       </CardContent>
       
-      <CardFooter className="pt-4 border-t flex justify-end bg-muted/10">
-        {task.status === 'todo' ? (
-          <Button onClick={completeTask} disabled={loading} className="w-full sm:w-auto">
-            <CheckCircle2 className="h-4 w-4 mr-2" />
-            Am Finalizat Acest Pas
-          </Button>
-        ) : (
-          <div className="flex items-center text-sm font-medium text-muted-foreground">
-            <CheckCircle2 className="h-4 w-4 mr-2 text-primary" />
-            Pas parcurs cu succes
-          </div>
-        )}
+      <CardFooter className="pt-4 border-t flex-col items-stretch gap-4 bg-muted/10">
+        <div className="flex justify-end w-full">
+          {task.status === 'todo' ? (
+            <Button onClick={completeTask} disabled={loading} className="w-full sm:w-auto">
+              <CheckCircle2 className="h-4 w-4 mr-2" />
+              Am Finalizat Acest Pas
+            </Button>
+          ) : (
+            <div className="flex items-center text-sm font-medium text-muted-foreground">
+              <CheckCircle2 className="h-4 w-4 mr-2 text-primary" />
+              Pas parcurs cu succes
+            </div>
+          )}
+        </div>
+
+        <div className="w-full bg-background rounded-md border mt-2">
+          <TaskCollaboration taskId={task.id} />
+        </div>
       </CardFooter>
     </Card>
   )

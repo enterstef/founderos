@@ -11,6 +11,7 @@ import type { ProjectTask } from '../schemas'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import clsx from 'clsx'
+import { TaskCollaboration } from '@/features/collaboration/components/task-collaboration'
 
 export function TaskCardAgency({ task }: { task: ProjectTask }) {
   const [loading, setLoading] = useState(false)
@@ -120,16 +121,22 @@ export function TaskCardAgency({ task }: { task: ProjectTask }) {
         </div>
       </CardContent>
       
-      <CardFooter className="pt-4 border-t flex justify-between items-center bg-muted/10">
-        <span className="text-xs text-muted-foreground">ID: {task.id.split('-')[0]}...</span>
-        <Button 
-          variant={task.status === 'done' ? "outline" : "default"} 
-          size="sm" 
-          onClick={toggleStatus} 
-          disabled={loading}
-        >
-          {task.status === 'done' ? 'Marchează ca Neînceput' : 'Marchează ca Finalizat'}
-        </Button>
+      <CardFooter className="pt-4 border-t flex-col items-stretch gap-4 bg-muted/10">
+        <div className="flex justify-between items-center w-full">
+          <span className="text-xs text-muted-foreground">ID: {task.id.split('-')[0]}...</span>
+          <Button 
+            variant={task.status === 'done' ? "outline" : "default"} 
+            size="sm" 
+            onClick={toggleStatus} 
+            disabled={loading}
+          >
+            {task.status === 'done' ? 'Marchează ca Neînceput' : 'Marchează ca Finalizat'}
+          </Button>
+        </div>
+        
+        <div className="w-full bg-background rounded-md border mt-2">
+          <TaskCollaboration taskId={task.id} />
+        </div>
       </CardFooter>
     </Card>
   )
