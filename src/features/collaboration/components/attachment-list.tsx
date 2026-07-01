@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
 import { Paperclip, Download, Loader2 } from 'lucide-react'
 
-export function AttachmentList({ taskId, attachments }: { taskId: string, attachments: TaskAttachment[] }) {
+export function AttachmentList({ taskId, attachments, onUpdate }: { taskId: string, attachments: TaskAttachment[], onUpdate: () => void }) {
   const [uploading, setUploading] = useState(false)
   const { toast } = useToast()
   const supabase = createClient()
@@ -47,6 +47,7 @@ export function AttachmentList({ taskId, attachments }: { taskId: string, attach
       toast({ variant: 'destructive', title: 'Eroare salvare', description: res.error })
     } else {
       toast({ title: 'Fișier încărcat cu succes' })
+      onUpdate()
     }
     
     setUploading(false)

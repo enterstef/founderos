@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast'
 import { formatDistanceToNow } from 'date-fns'
 import { ro } from 'date-fns/locale'
 
-export function CommentThread({ taskId, comments }: { taskId: string, comments: TaskComment[] }) {
+export function CommentThread({ taskId, comments, onUpdate }: { taskId: string, comments: TaskComment[], onUpdate: () => void }) {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const { toast } = useToast()
@@ -23,6 +23,7 @@ export function CommentThread({ taskId, comments }: { taskId: string, comments: 
       toast({ variant: 'destructive', title: 'Eroare', description: res.error })
     } else {
       setMessage('')
+      onUpdate()
     }
     setLoading(false)
   }

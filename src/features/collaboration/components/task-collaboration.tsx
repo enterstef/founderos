@@ -53,11 +53,11 @@ export function TaskCollaboration({ taskId }: { taskId: string }) {
             <div className="grid lg:grid-cols-2 gap-8">
               <div>
                 <h4 className="font-semibold mb-4 text-sm">Comentarii</h4>
-                <CommentThread taskId={taskId} comments={data.comments} />
+                <CommentThread taskId={taskId} comments={data.comments} onUpdate={loadData} />
               </div>
               <div>
                 <h4 className="font-semibold mb-4 text-sm">Fișiere atașate</h4>
-                <AttachmentList taskId={taskId} attachments={data.attachments} />
+                <AttachmentList taskId={taskId} attachments={data.attachments} onUpdate={loadData} />
               </div>
             </div>
           ) : (
