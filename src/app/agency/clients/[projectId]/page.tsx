@@ -3,16 +3,24 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { PageHeader } from '@/components/shared/page-header'
 import { getProjectById } from '@/features/client-management/queries'
+import { getProjectTasks, groupTasksByModule } from '@/features/project-tracking/queries'
 import { Button } from '@/components/ui/button'
+import { ProgressOverview } from '@/features/project-tracking/components/progress-overview'
+import { TaskListAgency } from '@/features/project-tracking/components/task-list-agency'
 
 export default async function ProjectDetailsPage({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params
   
-  const project = await getProjectById(projectId).catch(() => null)
+  const [project, tasks] = await Promise.all([
+    getProjectById(projectId).catch(() => null),
+    getProjectTasks(projectId).catch(() => [])
+  ])
 
   if (!project) {
     notFound()
   }
+
+  const groupedTasks = groupTasksByModule(tasks)
 
   return (
     <div className="space-y-8">
@@ -29,14 +37,21 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
         />
       </div>
 
-      <div className="border rounded-lg p-8 bg-muted/20 text-center">
-        <h2 className="text-xl font-medium mb-2">Workspace-ul Proiectului</h2>
-        <p className="text-muted-foreground mb-6">
-          Aici vei vedea task-urile clonate pentru acest client, progresul lor și te vei putea implica prin comentarii și fișiere.
-        </p>
-        <p className="text-sm font-medium text-primary">
-          [Acest ecran va fi implementat la Step 7 - Project Tracking și Step 8 - Collaboration]
-        </p>
+      <div className="grid lg:grid-cols-4 gap-8">
+        <div className="lg:col-span-3">
+          <TaskListAgency groupedTasks={groupedTasks} />
+        </div>
+        
+        <div className="lg:col-span-1 space-y-6">
+          <ProgressOverview tasks={tasks} />
+          
+          <div className="border rounded-lg p-6 bg-muted/30">
+            <h3 className="font-semibold mb-2">Informații Companie</h3>
+            <pre className="text-xs text-muted-foreground whitespace-pre-wrap overflow-x-auto">
+              {JSON.stringify(project.company_info, null, 2)}
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
   )
